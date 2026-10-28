@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Customer Segment Checker</title>
+  <style>
+    body { font-family: Arial, sans-serif; max-width: 420px; margin: 40px auto; }
+    label { display: block; margin-top: 12px; }
+    input { width: 100%; padding: 6px; }
+    button { margin-top: 16px; padding: 8px 16px; }
+    #result { margin-top: 20px; font-weight: bold; }
+    #error { margin-top: 20px; color: #b00020; }
+  </style>
+</head>
+<body>
+  <h1>Customer Segment Checker</h1>
+
+  <label for="recency">Days since last purchase</label>
+  <input id="recency" type="text" inputmode="numeric">
+
+  <label for="frequency">Number of purchases</label>
+  <input id="frequency" type="text" inputmode="numeric">
+
+  <button id="check" type="button">Check segment</button>
+
+  <div id="result"></div>
+  <div id="error"></div>
+
+  <script>
+    function segment(recency, frequency) {
+      if (recency <= 30 && frequency >= 5) return "Champion";
+      if (recency <= 60 && frequency >= 3) return "Loyal";
+      if (recency <= 180) return "At risk";
+      return "Lost";
+    }
+
+    function isWholeNumber(text) {
+      return /^\d+$/.test(text.trim());
+    }
+
+    document.getElementById("check").addEventListener("click", function () {
+      var r = document.getElementById("recency").value;
+      var f = document.getElementById("frequency").value;
+      var result = document.getElementById("result");
+      var error = document.getElementById("error");
+      result.textContent = "";
+      error.textContent = "";
+
+      if (!isWholeNumber(r) || !isWholeNumber(f)) {
+        error.textContent = "Please enter whole numbers (0 or higher).";
+        return;
+      }
+      result.textContent = "Segment: " + segment(parseInt(r, 10), parseInt(f, 10));
+    });
+  </script>
+</body>
+</html>
